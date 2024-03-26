@@ -48,6 +48,7 @@ int mdc (int a, int b)
 
 int mmc (int a, int b)
 {
+	//Realiza minimo multiplo comum pelo metodo de Euclides
 	if((a == 0) || (b == 0))
 		return 0;
 	return (a*b) / mdc(a,b);
@@ -55,6 +56,9 @@ int mmc (int a, int b)
 
 struct racional simplifica_r (struct racional r)
 {
+	/* Verifica se o racional eh valido, se for
+	 * recebe o num/den dividido pelo mdc
+	 */
 	int mdcs;
 	struct racional simp;
 	simp.valido = 0;
@@ -84,6 +88,9 @@ struct racional cria_r (int numerador, int denominador)
 
 struct racional sorteia_r (int n)
 {
+	/* Num/den recebem um numero aleatorio entre "0" e "n"
+	 * e cria um novo racional com os numeros
+	 */
 	struct racional sort;
 	
 	int denum = aleat(0,n);
@@ -94,32 +101,35 @@ struct racional sorteia_r (int n)
 
 void imprime_r (struct racional r)
 {
+	//Verifica se eh invalido, se for, imprime "INVALIDO"
 	if(valido_r(r) == 0)
 	{
 		printf("INVALIDO ");
 		return ;
 	}
-
-		
+	//Se o numerador for "0" imprime ele
 	if(r.num == 0)
 	{
 		printf("0 ");
 		return ;
 	}
 	r = simplifica_r(r);
-		
+	
+	//Se o denominador for "1" imprime o numerador
 	if(r.den == 1)
 	{
 		printf("%d ", r.num);
 		return ;
 	}
-
+	//Se o denominador eh igual ao numerador imprime "1"
 	if(r.den == r.num)
 	{
 		printf("1 ");
 		return ;	
 	}
-		
+	/* Se o denominador eh negativo ele recebe ele mesmo positivo
+	 * simplifica e imprime
+	 */
 	if(r.den < 0)
 	{
 		r.den = r.den * -1;
@@ -128,7 +138,9 @@ void imprime_r (struct racional r)
 		return ;	
 
 	}
-	
+	/* Se o numerador e o denominador sao negativos
+	 * num/den recebem eles mesmos positivos, simplificam e imprimem
+	 */
 	if((r.num < 0) && (r.den < 0))
 	{
 		r.num = r.num * -1;
@@ -137,7 +149,7 @@ void imprime_r (struct racional r)
 		printf("%d/%d ", r.num,r.den);
 		return ;
 	}
-
+	//Se o racional eh valido, simplifica e imprime
 	if(valido_r(r) == 1)
 	{
 		r = simplifica_r(r);
@@ -149,6 +161,9 @@ void imprime_r (struct racional r)
 
 int valido_r (struct racional r)
 {
+	/* Verifica se o racional eh valido, ele so eh se
+	 * o denominador for diferente de 0, retorna 1 se for valido e 0 caso contrario
+	 */
 	if(r.den != 0)
 		return 1;
 	return 0;
@@ -156,10 +171,18 @@ int valido_r (struct racional r)
 
 struct racional soma_r (struct racional r1, struct racional r2)
 {
+	//Operacao de soma de racionais
+	
+	/* O denominador de r3 recebe o denominador de r1 vezes o denominador de r2,
+	 * o numerador de r3 recebe o seu denominador dividido pelo produto
+	 * do denominador e numerador de r1 mais a mesma operacao mas com r2,
+	 * verifica se r3 eh valido e retorna
+	 */
 	struct racional soma;
 	
 	if((valido_r(r1) == 1) && (valido_r(r2) == 1))
 	{
+		
 		soma.den = r1.den*r2.den;
 		soma.num = (soma.den / r1.den * r1.num) + (soma.den / r2.den * r2.num);
 		soma.valido = valido_r(soma);
@@ -170,6 +193,13 @@ struct racional soma_r (struct racional r1, struct racional r2)
 
 struct racional subtrai_r (struct racional r1, struct racional r2)
 {
+	//Operacao de subtracao de racionais
+	
+	/* O denominador de r3 recebe denominador de r1 vezes o de r2,
+	 * o numerador de r3 recebe o seu denominador dividido pelo produto
+	 * do denominador e numerador de r1 menos a mesma operacao mas com r2,
+	 * verifica se r3 eh valido e retorna r3
+	 */
 	struct racional subt;
 	if((valido_r(r1) == 1) && (valido_r(r2) == 1))
 	{
@@ -183,6 +213,12 @@ struct racional subtrai_r (struct racional r1, struct racional r2)
 
 struct racional multiplica_r (struct racional r1, struct racional r2)
 {
+	//Operacao de multiplicacao de racionais
+	
+	/* Denominador de r3 recebe denominador de r1 vezes denominador de r2,
+	 * o numerador faz a mesma coisa mas com numeradores, verifica se r3 eh valido
+	 * e retorna r3
+	 */
 	struct racional mult;
 	if((valido_r(r1) == 1) && (valido_r(r2) == 1))
 	{
@@ -196,6 +232,12 @@ struct racional multiplica_r (struct racional r1, struct racional r2)
 
 struct racional divide_r (struct racional r1, struct racional r2)
 {
+	//Operacao de divisao de racionais
+	
+	/* Numerador de r3 recebe o produto do numerador de r1 com denominador r2,
+	 * o denominador recebe o produto do denominador de r1 com numerador de r2,
+	 * verifica se r3 eh valido e retorna r3
+	 */
 	struct racional divi;
 	if((valido_r(r1) == 1) && (valido_r(r2) == 1))
 	{
