@@ -24,20 +24,19 @@ int main ()
 	long n;
 	long max;
 	/* Scaneia "n" e "max" */
-	scanf("%ld", &n);
-	scanf("%ld", &max);
+	scanf("%ld %ld", &n, &max);
 	/* Verifica se "n" eh maior que "100", se for recebe "100" */
 	if(n > 100)
-		n=100;
+		n = 100;
 	/* Verifica se "n" eh negativo, se for recebe "0" */
 	if(n < 0)
-		n=0;
+		n = 0;
 	/* Verifica se "max" eh maior que "30", se for recebe "30" */
 	if(max > 30)
-		max= 30;
+		max = 30;
 	/* Verifica se "max" eh negativo, se for recebe "0" */
 	if(max < 0)
-		max=0;
+		max = 0;
 
     srand (0); /* use assim, com zero */
     
@@ -46,32 +45,32 @@ int main ()
     /*Semente aleatoria 
 	srand(time(NULL));*/
 
-	for (i=1;i <= n; i++)
+	for (i = 1;i <= n; i++)
 	{	
 		/* Imprime a iteração */
 		printf("%ld: ", i);
 		/* Sorteia dois racionais */
-		sorteado1= sorteia_r(max);
-		sorteado2= sorteia_r(max);
+		sorteado1= sorteia_r(-max,max);
+		sorteado2= sorteia_r(-max,max);
 		/* Imprime os sorteados */
 		imprime_r(sorteado1);
 		imprime_r(sorteado2);
 		/* Se algum dos sorteados for invalido, imprime que eh invalido */
-		if(sorteado1.valido != 1)
+		if(valido_r(sorteado1) != 1)
 		{
 			printf("NUMERO INVALIDO\n");
 			return 1;
 		}
-		if(sorteado2.valido != 1)
+		if(valido_r(sorteado2) != 1)
 		{
 			printf("NUMERO INVALIDO\n");
 			return 1;
 		}
 		/* Operacoes com racionais, soma, multiplicacao etc */
-		soma= soma_r(sorteado1,sorteado2);
-		subtracao= subtrai_r(sorteado1,sorteado2);
-		multiplicacao= multiplica_r(sorteado1,sorteado2);
-		divisao= divide_r(sorteado1,sorteado2);
+		soma = soma_r(sorteado1,sorteado2);
+		subtracao = subtrai_r(sorteado1,sorteado2);
+		multiplicacao = multiplica_r(sorteado1,sorteado2);
+		divisao = divide_r(sorteado1,sorteado2);
 		/* Verifica se a divisao eh invalida, se for imprime que eh invalida */
 		if(valido_r(divisao) == 0)
 		{
@@ -84,7 +83,6 @@ int main ()
 		imprime_r(multiplicacao);
 		imprime_r(divisao);
 		printf("\n");
-
-
+    }
     return (0) ;
 }
