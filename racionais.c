@@ -94,13 +94,11 @@ struct racional simplifica_r (struct racional r)
 
 	long mdcs;
 	struct racional simp;
-	simp.valido = 0;
 	if(valido_r(r) == 1)
 	{
 		mdcs = mdc(r.num,r.den);
 		simp.num = r.num / mdcs;
 		simp.den = r.den / mdcs;
-		simp.valido=valido_r(simp);
 	}
 	return simp;
 }
@@ -114,8 +112,7 @@ struct racional cria_r (long numerador, long denominador)
 	
 	rac.num = numerador;
 	rac.den = denominador;
-	rac.valido = valido_r(rac);
-	return rac;
+  return rac;
 }
 int valido_r (struct racional r)
 {
@@ -135,8 +132,8 @@ struct racional sorteia_r (long min, long max)
 
 	struct racional sort;
 	
-	long denum = aleat(0,n);
-	long numer = aleat(0,n);
+	long denum = aleat(min,max);
+	long numer = aleat(min,max);
 	sort = cria_r(denum,numer);
 	return sort;
 }
@@ -148,14 +145,14 @@ void imprime_r (struct racional r)
 		printf("INVALIDO ");
 		return ;
 	}
-	/* Se o numerador for "0" imprime ele */
+	/* Se o numerador for "0" imprime "0" */
 	if(r.num == 0)
 	{
 		printf("0 ");
 		return ;
-	}
-	r = simplifica_r(r);
-	
+	}	
+  simplifica_r(r);
+  
 	/* Se o denominador for "1" imprime o numerador */
 	if(r.den == 1)
 	{
@@ -166,17 +163,6 @@ void imprime_r (struct racional r)
 	if(r.den == r.num)
 	{
 		printf("1 ");
-		return ;	
-	}
-	/* Se o denominador eh negativo ele recebe ele mesmo positivo
-	 * simplifica e imprime
-	 */
-
-	if(r.den < 0)
-	{
-		r.den = r.den * -1;
-		r = simplifica_r(r);
-		printf("-%ld/%ld ",r.num,r.den);
 		return ;	
 	}
 	/* Se o numerador e o denominador sao negativos
@@ -190,6 +176,21 @@ void imprime_r (struct racional r)
 		r = simplifica_r(r);
 		printf("%ld/%ld ", r.num,r.den);
 		return ;
+	}
+  /* Se o denominador ou numerador forem negativo o sinal
+   * vem antes do numerador, simplifica e imprime
+	 */
+
+	if(r.den < 0 || r.num < 0)
+	{
+		if(r.den < 0)
+    {
+      r.den = -1 * r.den;
+      r.num = -1 * r.num; 
+    }
+		r = simplifica_r(r);
+		printf("%ld/%ld ",r.num,r.den);
+		return ;	
 	}
 	/* Se o racional eh valido, simplifica e imprime */
 	if(valido_r(r) == 1)
@@ -214,7 +215,6 @@ struct racional soma_r (struct racional r1, struct racional r2)
 		
 		soma.den = r1.den*r2.den;
 		soma.num = (soma.den / r1.den * r1.num) + (soma.den / r2.den * r2.num);
-		soma.valido = valido_r(soma);
 	}
 	return soma;
 }
@@ -231,7 +231,6 @@ struct racional subtrai_r (struct racional r1, struct racional r2)
 	{
 		subt.den = r1.den*r2.den;
 		subt.num = (subt.den / r1.den * r1.num) - (subt.den / r2.den * r2.num);
-		subt.valido = valido_r(subt);
 	}
 	return subt;
 }
@@ -247,7 +246,6 @@ struct racional multiplica_r (struct racional r1, struct racional r2)
 	{
 		mult.den = r1.den * r2.den;
 		mult.num = r1.num * r2.num;
-		mult.valido = valido_r(mult);
 	}
 	return mult;
 }
